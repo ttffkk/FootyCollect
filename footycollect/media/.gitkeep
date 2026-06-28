@@ -1,0 +1,2 @@
+# Keeps footycollect/media/ (MEDIA_ROOT) present in the image so a mounted
+# named volume inherits django ownership and user uploads are writable.
