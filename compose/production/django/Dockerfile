@@ -88,6 +88,8 @@ USER django
 
 RUN DATABASE_URL="" \
   CELERY_BROKER_URL="" \
+  FKA_API_IP="" \
+  API_KEY="" \
   DJANGO_SETTINGS_MODULE="config.settings.test" \
   python manage.py compilemessages
 
