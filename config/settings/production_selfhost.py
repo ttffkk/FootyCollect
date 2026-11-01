@@ -9,7 +9,7 @@ time. Here we build on ``base`` and re-add only the hardening we want:
 
 - Static files served by WhiteNoise from inside the container (no S3/R2).
 - Media (user-uploaded photos) on the local filesystem (a Docker volume).
-- Email to the console (no transactional provider).
+- Email to the console by default; SMTP (host/port/login/TLS) via env.
 - TLS terminated upstream; this app speaks http and trusts X-Forwarded-Proto.
 """
 
@@ -95,6 +95,14 @@ EMAIL_BACKEND = env(
     "DJANGO_EMAIL_BACKEND",
     default="django.core.mail.backends.console.EmailBackend",
 )
+# Read only by the SMTP backend
+# (DJANGO_EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend),
+# e.g. a shared relay on 587 with STARTTLS. Django's own defaults otherwise.
+EMAIL_HOST = env("DJANGO_EMAIL_HOST", default="localhost")
+EMAIL_PORT = env.int("DJANGO_EMAIL_PORT", default=25)
+EMAIL_HOST_USER = env("DJANGO_EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = env("DJANGO_EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", default=False)
 DEFAULT_FROM_EMAIL = env(
     "DJANGO_DEFAULT_FROM_EMAIL",
     default="footycollect <noreply@footy.ttffkk.com>",
